@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - MyChat</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" />
+	<link href="@Url.Content("~/css/bootstrap.min.css")" rel="stylesheet" />
+	<script src="@Url.Content("~/js/bootstrap.min.js")"></script>
+	<script src="~/js/signalr/dist/browser/signalr.js"></script>
+	<script src="@Url.Content("~/js/jQuery-3.6.0.min.js")"></script>
+	<script>
+        function showAddChn() {
+            if (document.getElementById("addChnDiv").style.display == "block") {
+				document.getElementById("addChnDiv").style.display = "none";
+				document.getElementById("addChnBtnSpan").value = "+";
+			} else {
+				document.getElementById("addChnDiv").style.display = "block";
+				document.getElementById("addChnBtnSpan").value = "-";
+			}
+
+		}
+		function addChannel() {
+			var name = document.getElementById("newchannelname").value;
+
+			if (name != "") {
+				$.ajax({
+				type: "POST",
+				url: "@Url.Action("AddChannel", "Home")",
+				data: { name: name },
+				success: function (data) {
+					document.getElementById("addChnDiv").style.display = "none";
+					document.getElementById("addChnBtnSpan").value = "+";
+					},
+					dataType: "json",
+					traditional: true
+				});
+			}
+		}
+	</script>
+</head>
+<body>
+	<header>
+		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+			<div class="container">
+				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MyChat</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+					<ul class="navbar-nav flex-grow-1">
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+	<div class="container">
+		<main role="main" class="pb-3">
+			<div class="row col-md-12 FullContent">
+				<div class="container col-md-10">
+					<main role="main" class="CustomBody">
+						@RenderBody()
+					</main>
+				</div>
+				<div class="col-md-2 CustomLeftnavbar">
+					<fieldset id="channelList" style="display:none; background-color:aliceblue; width:350px;" align="center">
+						<legend style="padding-top: 25%">Channels</legend>
+						<ul id="channelListItems" style="text-align:center; padding-left:0px;"></ul>
+						<div style="background-color:grey">
+							<button type="button" class="btn btn-block" onclick="showAddChn();" id="addChnBtnSym" align="right"><span id="addChnBtnSpan">+</span></button>
+							<div id="addChnDiv" style="display:none">
+								<input type="text" class="form-control" id="newchannelname" placeholder="Channel Name" />
+								<button type="button" class="btn btn-block" onclick="addChannel();" id="addChnBtn">Add Channel</button>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+			</div>
+		</main>
+	</div>
+	<footer>
+		<div class="jumbotron">
+			<h1>Who I'm ....</h1>
+			<div class="row">
+				<div class="col-md-4">
+					<h2><img src="~/images/lnkin_Ico.png" width="30" />Linkedin</h2>
+					<p><a class="btn btn-default" href="https://linkedin.com/in/omerfatih11" target="_new">Show Profile &raquo;</a></p>
+				</div>
+				<div class="col-md-4">
+					<h2><img src="~/images/cv_ico.jpg" width="30" />CV</h2>
+					<p><a class="btn btn-default" href="https://europa.eu/europass/eportfolio/screen/share/6813c123-ffc6-4763-9f01-fae17b3b9c6f?lang=en" target="_new">Show CV &raquo;</a></p>
+				</div>
+				<div class="col-md-4">
+					<h2><img src="~/images/contact-ico.png" width="30" />Contact</h2>
+					<address>
+						<strong>E-mail:</strong>   <a href="mailto: omerfatih97@hotmail.com"> omerfatih97@hotmail.com</a><br />
+						<strong>Phone:</strong>   <a> +90 (535) 623 47 75</a><br />
+					</address>
+				</div>
+			</div>
+			<div align="center"><p>&copy; @DateTime.Now.Year - Crated By Ömer Fatih YORGANCILAR</p></div>
+			
+		</div>
+	</footer>
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
